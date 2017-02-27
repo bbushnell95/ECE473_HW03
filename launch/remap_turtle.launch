@@ -1,0 +1,25 @@
+<!--
+Name: Brett Bushnell
+Assignment: HW02
+File: remap_turtle.launch
+Description: Remaps parameter names in the turtle_spiral_node to control the catcar node
+email: bbushnell@email.arizona.edu
+--> 
+
+<launch>
+	<arg name= "packageLocation" default="$(find hw02bushnell)"/>
+
+        <include file = "$(find catvehicle)/launch/catvehicle_skidpan.launch"/>
+ 
+        <node name="turtle_spiral" pkg="hw02bushnell" type="turtle_spiral_node">
+            <remap from="~/cmd_vel" to="/catvehicle/cmd_vel"/>
+        </node>
+
+   <node name = "odom_to_pose" pkg = "odom2pose" type = "odom2pose.py">
+	<remap from="~/odom" to="catvehicle/odom"/>
+   </node>
+
+<!--    <node name="rosbag_recorder" pkg="rosbag" type="record" args="-a -O $(arg packageLocation)/remap_turtle_rosbag" output="screen">
+    </node>
+ -->
+ </launch>

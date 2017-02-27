@@ -1,0 +1,22 @@
+<!--
+Name: Brett Bushnell
+Assignment: HW02
+File: remap_turtle.launch
+Description: Launch file that opens turtlesim and has it go through the spiral from hw01
+email: bbushnell@email.arizona.edu
+--> 
+
+
+<launch>
+	
+    <arg name= "packageLocation" default="$(find hw02bushnell)"/>
+    <node name="first_turtle_sim_node" pkg="turtlesim" type="turtlesim_node">
+    </node>
+
+    <node name="turtle_spiral" pkg="hw02bushnell" type="turtle_spiral_node">
+        <remap from="~/cmd_vel" to="turtle1/cmd_vel"/>
+    </node>
+
+    <node name="rosbag_recorder" pkg="rosbag" type="record" args="-a -O $(arg packageLocation)/turtleSpiral" output="screen"/>
+
+ </launch>

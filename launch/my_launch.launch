@@ -1,0 +1,21 @@
+<launch>
+
+	
+		<node name="my_turtle_sim_thing" pkg="turtlesim" type="turtlesim_node">
+		</node>
+
+		<node name= "my_other_node" pkg="hw01_bushnell" type= "hw01_bushnell_node">
+			<remap from="~/cmd_vel" to="turtle1/cmd_vel"/>
+		</node>
+	
+
+	<node name="my_turtle_sim_thing2" pkg="turtlesim" type="turtlesim_node">
+	</node>
+
+	<node name="my_turtle_controller" pkg="turtlesim" type="turtle_teleop_key">
+	</node>
+
+
+</launch>
+
+

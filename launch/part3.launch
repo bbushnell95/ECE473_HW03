@@ -1,0 +1,47 @@
+<!--
+Name: Brett Bushnell
+Assignment: HW02
+File: part3.launch
+Description: This file is just like the azcar_sim_skidpad.launch file, except now it uses a world file that I have generated
+email: bbushnell@email.arizona.edu
+--> 
+
+<launch>
+
+	  <arg name="paused" default="false"/>
+	  <arg name="use_sim_time" default="true"/>
+	  <arg name="gui" default="false"/>
+	  <arg name="headless" default="false"/>
+	  <arg name="debug" default="false"/>
+
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find hw02bushnell)/worlds/videoDemo.world"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="true" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+	<group ns="azcar_sim">
+		<param name="robot_description"
+			command="$(find xacro)/xacro.py '$(find azcar_sim)/urdf/azcar.xacro' roboname:='azcar_sim'" />
+		<include file="$(find azcar_sim)/launch/azcar.launch">
+			<arg name="robot_name" value="azcar_sim"/>
+			<arg name="init_pose" value="-x 1 -y 1 -z 0"/>
+			<arg name="config_file" value="azcar_control.yaml"/>
+		</include>
+
+	</group>
+	
+	<node name="turtle_spiral" pkg="hw02bushnell" type="turtle_spiral_node">
+           <remap from="~/cmd_vel" to="/azcar_sim/cmd_vel"/>
+    </node>
+
+   <node name = "odom_to_pose" pkg = "odom2pose" type = "odom2pose.py">
+	<remap from="~/odom" to="azcar_sim/odom"/>
+   </node>
+	
+	
+</launch>

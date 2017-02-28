@@ -39,7 +39,7 @@ int main(int argc, char **argv){
 	//position_subscriber = n.subscribe("/turtle1/pose",10, updatePosition);
 
 	//get the parameters from cmd line, else have default settings
-	n.param<double>("speed", speed,1.0);
+	n.param<double>("speed", speed,3.0);
 	n.param("theta", theta, 5.0);
 	n.param("rate", rate, 100.0);
 
@@ -47,9 +47,9 @@ int main(int argc, char **argv){
 	ROS_INFO("Theta is: %lf", theta);
 	ROS_INFO("The Rate is: %lf", rate);
 
-	move(speed, theta, rate, velocity_publisher);
+	move(speed, theta, rate, velocity_publisher, turtle_position);
 
-	//ros::spin();
+	ros::spin();
 	//ROS_INFO("Stopping Turtle!");
 	return 0;
 

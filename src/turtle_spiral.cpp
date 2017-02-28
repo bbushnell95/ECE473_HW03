@@ -11,6 +11,7 @@
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
 #include "turtlesim/Pose.h"
+#include "hw02bushnell/move.h"
 
 
 ros::Publisher velocity_publisher;
@@ -19,7 +20,7 @@ turtlesim::Pose turtle_position;
 
 
 //move the turtle
-void move(double speed, double theta, int rate);
+//void move(double speed, double theta, int rate);
 void positionCallBack(turtlesim::Pose::ConstPtr & currPosition);
 
 int main(int argc, char **argv){
@@ -55,7 +56,7 @@ int main(int argc, char **argv){
 }
 
 //makes the turtle move in a spiral (f = r(theta), where r is the distance from the start)
-void move(double speed, double theta, int rate){
+/*void move(double speed, double theta, int rate){
 	geometry_msgs::Twist vel_msg;
 
 	//set intial linear x speed of turtle
@@ -86,7 +87,7 @@ void move(double speed, double theta, int rate){
 
 
 }
-
+*/
 void positionCallBack(turtlesim::Pose::ConstPtr & currPosition){
 	turtle_position.x = currPosition->x;
 	turtle_position.y = currPosition->y;

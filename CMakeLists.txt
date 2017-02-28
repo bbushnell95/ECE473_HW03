@@ -123,7 +123,7 @@ include_directories(
 # add_library(hw01_bushnell
 #   src/${PROJECT_NAME}/hw01_bushnell.cpp
 # )
-
+ add_library(move src/move.cpp)
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -131,8 +131,10 @@ include_directories(
 
 ## Declare a C++ executable
 # add_executable(hw01_bushnell_node src/hw01_bushnell_node.cpp)
+include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(turtle_spiral_node src/turtle_spiral.cpp)
 target_link_libraries(turtle_spiral_node ${catkin_LIBRARIES})
+target_link_libraries(turtle_spiral_node move ${catkin_LIBRARIES})
 
 
 ## Add cmake target dependencies of the executable

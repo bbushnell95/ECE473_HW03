@@ -4,7 +4,7 @@
 #include "turtlesim/Pose.h"
 
 
-void move(double speed, double theta, int rate){
+void move(double speed, double theta, int rate, ros::Publisher velocity_publisher){
 	geometry_msgs::Twist vel_msg;
 
 	//set intial linear x speed of turtle

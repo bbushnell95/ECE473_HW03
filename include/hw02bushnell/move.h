@@ -9,8 +9,12 @@
 #ifndef MOVE_H
 #define MOVE_H
 
+#include "ros/ros.h"
+#include "geometry_msgs/Twist.h"
+#include "turtlesim/Pose.h"
 
-void move(double speed, double theta, int rate);
+
+void move(double speed, double theta, int rate, ros::Publisher velocity_publisher);
 
 
 #endif //MOVE_H

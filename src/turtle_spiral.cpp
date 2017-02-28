@@ -47,7 +47,7 @@ int main(int argc, char **argv){
 	ROS_INFO("Theta is: %lf", theta);
 	ROS_INFO("The Rate is: %lf", rate);
 
-	move(speed, theta, rate);
+	move(speed, theta, rate, velocity_publisher);
 
 	//ros::spin();
 	//ROS_INFO("Stopping Turtle!");

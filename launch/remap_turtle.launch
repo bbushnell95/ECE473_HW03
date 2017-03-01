@@ -9,15 +9,17 @@ email: bbushnell@email.arizona.edu
 <launch>
 	<arg name= "packageLocation" default="$(find hw02bushnell)"/>
 
+	<param name= "rate" value = "10000"/>
+
         <include file = "$(find catvehicle)/launch/catvehicle_skidpan.launch"/>
  
         <node name="turtle_spiral" pkg="hw02bushnell" type="turtle_spiral_node">
             <remap from="~/cmd_vel" to="/catvehicle/cmd_vel"/>
         </node>
 
-   <node name = "odom_to_pose" pkg = "odom2pose" type = "odom2pose.py">
-	<remap from="~/odom" to="catvehicle/odom"/>
-   </node>
+   	<node name = "odom_to_pose" pkg = "odom2pose" type = "odom2pose.py">
+		<remap from="~/odom" to="catvehicle/odom"/>
+   	</node>
 
 <!--    <node name="rosbag_recorder" pkg="rosbag" type="record" args="-a -O $(arg packageLocation)/remap_turtle_rosbag" output="screen">
     </node>

@@ -14,7 +14,7 @@
 #include "turtlesim/Pose.h"
 
 
-void move(double speed, double theta, int rate, ros::Publisher velocity_publisher, turtlesim::Pose turtle_position);
 double checkSpeed(double speed);
+
 
 #endif //MOVE_H

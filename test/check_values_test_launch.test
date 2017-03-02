@@ -1,0 +1,10 @@
+<!--
+Author: Brett Bushnell
+File: check_values_test_launch.test
+Description: Launch file for running tests for the check_Values library
+Email: bbushnell@email.arizona.edu
+-->
+
+<launch>
+	<test test-name="test_check_values" pkg="hw02bushnell" type="test_check_values" time-limit="60.0" />
+</launch>

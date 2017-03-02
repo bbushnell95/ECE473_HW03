@@ -193,3 +193,9 @@ target_link_libraries(turtle_spiral_node move ${catkin_LIBRARIES})
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+if(CATKIN_ENABLE_TESTING)
+	find_package(rostest REQUIRED)
+
+	add_rostest_gtest(test_check_values test/check_values_test_launch.test test/check_values_test.cpp)
+	target_link_libraries(test_check_values move ${catkin_LIBRARIES})
+endif()

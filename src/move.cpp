@@ -11,9 +11,13 @@
 
 
 double checkSpeed(double speed){
-	if(speed > 3.0){
+	if(speed > 4.0){
 		ROS_INFO("Input speed exceeds max speed of 3. Setting Speed to 3");
-		return 3.0; //we will set this as the max speeds
+		return 4.0; //we will set this as the max speeds
+	}
+	else if (speed < 0.0){
+		ROS_INFO("Speed cannot be negative, setting to 0");
+		return 0.0;
 	}
 	else{
 		return speed;

@@ -43,18 +43,21 @@ int main(int argc, char **argv){
 	n.param("rate", rate, 100.0);
 
     /*Edit 2_9_17: Changed "/turtle1/cmd_vel" to just "cmd_vel"*/
-	velocity_publisher = n.advertise<geometry_msgs::Twist>("cmd_vel", rate);
-	position_subscriber = n.subscribe("pose",rate, positionCallBack);
+	position_subscriber = n.subscribe("/turtle1/pose",100, positionCallBack);
+	velocity_publisher = n.advertise<geometry_msgs::Twist>("/turtle1/cmd_vel", 100);
+
 
 	ROS_INFO("Speed IS: %lf", speed);
 	ROS_INFO("Theta is: %lf", theta);
 	ROS_INFO("The Rate is: %lf", rate);
 
-	ROS_INFO("X: %lf", turtle_position.x);
-
-	move(speed, theta, rate);
-
+	//ROS_INFO("X: %lf", turtle_position.x);
+	
+	if(position_subscriber){
+		move(speed, theta, rate);
+	}
 	ros::spin();
+	
 	//ROS_INFO("Stopping Turtle!");
 	return 0;
 
@@ -97,8 +100,8 @@ int main(int argc, char **argv){
 /*One issue is the car flips, so I'm guessing speed is too high. Set to be constant and check if withing allowed limit*/
 void move(double speed, double theta, int rate){
 	geometry_msgs::Twist vel_msg;
-	double intialX = turtle_position.x;
-	double intialY = turtle_position.y;
+	double intialX = 5.544445;
+	double intialY = 5.544445;
 	double aSquare = pow(turtle_position.x,2);
 	double bSquare = pow(turtle_position.y,2);
 	double intialR = sqrt(aSquare + bSquare);
@@ -117,7 +120,7 @@ void move(double speed, double theta, int rate){
 	//set the angle speed
 	vel_msg.angular.x = 0;
 	vel_msg.angular.y = 0;
-	vel_msg.angular.z = theta;    //intial angle of the tire
+	vel_msg.angular.z = 0;    //intial angle of the tire
 
 	ros::Rate loop_rate(rate);
 
@@ -136,9 +139,10 @@ void move(double speed, double theta, int rate){
 		aSquare = pow(turtle_position.x - intialX,2);
 		bSquare = pow(turtle_position.y - intialY,2); 
 		r = sqrt(aSquare + bSquare);
-		newTheta = newTheta * 0.2;
+		newTheta = (r + theta) * 0.5;
+		//ROS_INFO("X: %lf", turtle_position.x);
 		//ROS_INFO("r: %lf", r);
-		//vel_msg.angular.z = newTheta;
+		vel_msg.angular.z = newTheta;
 		
 		//vel_msg.linear.x = r * theta;
 		ros::spinOnce();
@@ -155,6 +159,6 @@ void positionCallBack(const turtlesim::PoseConstPtr & currPosition){
 	
 	turtle_position.x = currPosition->x;
 	turtle_position.y = currPosition->y;
-	ROS_INFO("X1: %lf", turtle_position.x);
+	//ROS_INFO("X1: %lf", turtle_position.x);
 }
 

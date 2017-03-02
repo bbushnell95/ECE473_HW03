@@ -14,7 +14,7 @@ email: bbushnell@email.arizona.edu
         <include file = "$(find catvehicle)/launch/catvehicle_skidpan.launch"/>
  
         <node name="turtle_spiral" pkg="hw02bushnell" type="turtle_spiral_node">
-            <remap from="~/cmd_vel" to="/catvehicle/cmd_vel"/>
+            <remap from="~/turtle1/cmd_vel" to="/catvehicle/cmd_vel"/>
         </node>
 
    	<node name = "odom_to_pose" pkg = "odom2pose" type = "odom2pose.py">

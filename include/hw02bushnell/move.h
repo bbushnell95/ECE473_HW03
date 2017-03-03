@@ -15,6 +15,7 @@
 
 
 double checkSpeed(double speed);
+double calculateR(double currentX, double currentY, double initialX, double initialY);
 
 
 #endif //MOVE_H

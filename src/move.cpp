@@ -24,7 +24,12 @@ double checkSpeed(double speed){
 	}
 }
 
+double calculateR(double currentX, double currentY, double initialX, double initialY){
+	double a = pow(initialX - currentX, 2);
+	double b = pow(initialY - currentY, 2);
 
+	return sqrt(a + b);
+}
 
 
 

@@ -9,8 +9,51 @@
 #include "hw02bushnell/move.h"
 //#include "my_gtest/my_multiply.h"
 #include <ros/ros.h>
+#include "geometry_msgs/Twist.h"
+
+class CallbackHandler
+{
+public:
+  CallbackHandler()
+  : result(0)
+  { }
+
+  void callback(const geometry_msgs::Twist::ConstPtr& msg)
+  {
+    result = msg->linear.x;
+  }
+
+  int result;
+};
 
 
+TEST(NodeCase, CheckNodeSpeedTest){
+	ros::NodeHandle nh;
+	ros::Rate loop_rate(1);
+	double result;
+	int i = 0;	
+
+
+	// Handles our callback for our subscriber:
+	CallbackHandler mCallbackHandler;
+
+	// Define our publishers/subscribers:
+	ros::Subscriber result_sub = nh.subscribe("/catvehicle/cmd_vel", 100, &CallbackHandler::callback, &mCallbackHandler);
+	//ros::Publisher input_a = nh.advertise<std_msgs::Int32>("/my_node/my_input_a", 100);
+	//ros::Publisher input_b = nh.advertise<std_msgs::Int32>("/my_node/my_input_b", 100);
+	loop_rate.sleep();	// Give ROS time to configure topics.
+	
+	while(i < 10000){
+	//Result should stay below ar at 4
+		EXPECT_LE(mCallbackHandler.result, 4.0);
+	//ros::spin();
+		i = i + 1;
+	}
+
+	EXPECT_EQ(i, 10000);
+
+
+}
 
 TEST(LibraryCase, CheckSpeedTest){
 	double result = 0;
@@ -47,6 +90,7 @@ TEST(LibraryCase, CheckSpeedTest){
 int main(int argc, char** argv){
   testing::InitGoogleTest(&argc, argv);
   ros::init(argc, argv, "check_values_test");
+
   return RUN_ALL_TESTS();
 
 }

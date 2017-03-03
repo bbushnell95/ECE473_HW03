@@ -11,6 +11,7 @@
 //#include "my_gtest/my_multiply.h"
 #include <ros/ros.h>
 #include "geometry_msgs/Twist.h"
+#include "turtlesim/Pose.h"
 
 
 class CallbackHandler
@@ -25,13 +26,17 @@ public:
     result = msg->linear.x;
   }
 
-  int result;
+  void velocityCallBack(const turtlesim::Pose::ConstPtr& msg)
+  {
+    result = msg->linear_velocity;
+  }
+  double result;
 };
 
 
 TEST(NodeCase, CheckNodeSpeedTest){
-	ros::NodeHandle nh;
-	ros::Rate loop_rate(1);
+	ros::NodeHandle nh("~");
+	ros::Rate loop_rate(10000);
 	double result;
 	int i = 0;	
 
@@ -44,16 +49,63 @@ TEST(NodeCase, CheckNodeSpeedTest){
 	//ros::Publisher input_a = nh.advertise<std_msgs::Int32>("/my_node/my_input_a", 100);
 	//ros::Publisher input_b = nh.advertise<std_msgs::Int32>("/my_node/my_input_b", 100);
 	loop_rate.sleep();	// Give ROS time to configure topics.
+
+	//within the allowable speed
+	nh.setParam("speed", 0.0);
+	loop_rate.sleep();
+	ros::spinOnce();
+	EXPECT_EQ(mCallbackHandler.result, 0.0);		
+
+	nh.setParam("/turtle_spiral/speed", 2.0);
+	//loop_rate.sleep();
+	ros::spinOnce();
+	EXPECT_EQ(mCallbackHandler.result, 2.0);
+
+	nh.setParam("/turtle_spiral/speed", 4.0);
+	ros::spinOnce();
+	EXPECT_EQ(mCallbackHandler.result, 4.0);
+
+	//now for over and under the speed
+	nh.setParam("/turtle_spiral/speed", -1.0);
+	ros::spinOnce();
+	EXPECT_EQ(mCallbackHandler.result, 0.0);
+
+	//over the allowable speed
+	nh.setParam("/turtle_spiral/speed", 5.0);
+	ros::spinOnce();
+	EXPECT_EQ(mCallbackHandler.result, 4.0);
+
+
 	
-	while(i < 10000){
-	//Result should stay below ar at 4
-		EXPECT_LE(mCallbackHandler.result, 4.0);
-	//ros::spin();
-		i = i + 1;
-	}
+}
 
-	EXPECT_EQ(i, 10000);
+TEST(NodeCase, CheckCatVehicleLinearVel){
+	ros::NodeHandle nh;
+	ros::Rate loop_rate(1);
+	double result;
+	
+	CallbackHandler mCallbackHandler;
+	//Define the subscriber
+	ros::Subscriber result_sub = nh.subscribe("/turtle1/pose", 100, &CallbackHandler::velocityCallBack, &mCallbackHandler);
+	loop_rate.sleep();
 
+	//set param withing allowable limit
+	nh.setParam("speed", 0.0);
+	EXPECT_EQ(mCallbackHandler.result, 0.0);	
+
+	nh.setParam("speed", 2.0);
+	EXPECT_LE(mCallbackHandler.result, 2.0);
+
+	nh.setParam("speed", 4.0);
+	EXPECT_LE(mCallbackHandler.result, 4.0);
+
+	//now for over and under the speed
+	nh.setParam("speed", -1.0);
+	EXPECT_EQ(mCallbackHandler.result, 0.0);
+
+	//over the allowable speed
+	nh.setParam("speed", 5.0);
+	EXPECT_LE(mCallbackHandler.result, 4.0);
 
 }
 

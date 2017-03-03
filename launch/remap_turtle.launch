@@ -10,10 +10,11 @@ email: bbushnell@email.arizona.edu
 	<arg name= "packageLocation" default="$(find hw02bushnell)"/>
 
 	<param name= "rate" value = "10000"/>
+	<param name="/turtle_spiral/speed" value = "2"/>
 
         <include file = "$(find catvehicle)/launch/catvehicle_skidpan.launch"/>
  
-        <node name="turtle_spiral" pkg="hw02bushnell" type="turtle_spiral_node">
+        <node name="turtle_spiral" pkg="hw02bushnell" type="turtle_spiral_node" output="screen">
             <remap from="/turtle1/cmd_vel" to="/catvehicle/cmd_vel"/>
         </node>
 

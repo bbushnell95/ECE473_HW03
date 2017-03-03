@@ -7,7 +7,16 @@ Email: bbushnell@email.arizona.edu
 
 <launch>
 	<test test-name="test_check_values" pkg="hw02bushnell" type="test_check_values" time-limit="60.0" />
+	
+	<param name= "/turtle_spiral/speed" value = "2"/>
+
+	<include file = "$(find catvehicle)/launch/catvehicle_skidpan.launch"/>	
+
 	<node name="turtle_spiral" pkg="hw02bushnell" type="turtle_spiral_node">
-            <remap from="~/cmd_vel" to="/catvehicle/cmd_vel"/>
+            <remap from="/turtle_spiral/cmd_vel" to="/catvehicle/cmd_vel"/>
         </node>
+
+	<node name = "odom_to_pose" pkg = "odom2pose" type = "odom2pose.py">
+	    <remap from="~/odom" to="/catvehicle/odom"/>
+   	</node>
 </launch>

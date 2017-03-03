@@ -45,8 +45,12 @@ int main(int argc, char **argv){
 	position_subscriber = n.subscribe("/turtle1/pose",10, positionCallBack);
 	usleep(200000);
 	usleep(200000);
+	usleep(200000);
+	usleep(200000);
+	usleep(2000000);
+	usleep(1300000);
 	//usleep(200000);
-	//usleep(200000);
+	//usleep(2000000);
 	//ros::spinOnce();
 
 	//get the parameters from cmd line, else have default settings

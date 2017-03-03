@@ -14,11 +14,11 @@
 #include "turtlesim/Pose.h"
 
 
-class CallbackHandler
+class CallbackHandler1
 {
 public:
-  CallbackHandler()
-  : result(0)
+  CallbackHandler1()
+  : result(0.0)
   { }
 
   void callback(const geometry_msgs::Twist::ConstPtr& msg)
@@ -26,58 +26,26 @@ public:
     result = msg->linear.x;
   }
 
-  void velocityCallBack(const turtlesim::Pose::ConstPtr& msg)
-  {
-    result = msg->linear_velocity;
-  }
   double result;
+
+};
+
+class CallbackHandler
+{
+public:
+	CallbackHandler()
+	: result(0.0)
+	{}
+	
+	void callback(const turtlesim::Pose::ConstPtr& msg)
+	{
+		result = msg->linear_velocity;
+	}
+	
+	double result;
 };
 
 
-TEST(NodeCase, CheckNodeSpeedTest){
-	ros::NodeHandle nh("~");
-	ros::Rate loop_rate(10000);
-	double result;
-	int i = 0;	
-
-
-	// Handles our callback for our subscriber:
-	CallbackHandler mCallbackHandler;
-
-	// Define our publishers/subscribers:
-	ros::Subscriber result_sub = nh.subscribe("/catvehicle/cmd_vel", 100, &CallbackHandler::callback, &mCallbackHandler);
-	//ros::Publisher input_a = nh.advertise<std_msgs::Int32>("/my_node/my_input_a", 100);
-	//ros::Publisher input_b = nh.advertise<std_msgs::Int32>("/my_node/my_input_b", 100);
-	loop_rate.sleep();	// Give ROS time to configure topics.
-
-	//within the allowable speed
-	nh.setParam("speed", 0.0);
-	loop_rate.sleep();
-	ros::spinOnce();
-	EXPECT_EQ(mCallbackHandler.result, 0.0);		
-
-	nh.setParam("/turtle_spiral/speed", 2.0);
-	//loop_rate.sleep();
-	ros::spinOnce();
-	EXPECT_EQ(mCallbackHandler.result, 2.0);
-
-	nh.setParam("/turtle_spiral/speed", 4.0);
-	ros::spinOnce();
-	EXPECT_EQ(mCallbackHandler.result, 4.0);
-
-	//now for over and under the speed
-	nh.setParam("/turtle_spiral/speed", -1.0);
-	ros::spinOnce();
-	EXPECT_EQ(mCallbackHandler.result, 0.0);
-
-	//over the allowable speed
-	nh.setParam("/turtle_spiral/speed", 5.0);
-	ros::spinOnce();
-	EXPECT_EQ(mCallbackHandler.result, 4.0);
-
-
-	
-}
 
 TEST(NodeCase, CheckCatVehicleLinearVel){
 	ros::NodeHandle nh;
@@ -86,8 +54,9 @@ TEST(NodeCase, CheckCatVehicleLinearVel){
 	
 	CallbackHandler mCallbackHandler;
 	//Define the subscriber
-	ros::Subscriber result_sub = nh.subscribe("/turtle1/pose", 100, &CallbackHandler::velocityCallBack, &mCallbackHandler);
+	ros::Subscriber result_sub = nh.subscribe("/turtle1/pose", 100, &CallbackHandler::callback, &mCallbackHandler);
 	loop_rate.sleep();
+	usleep(200000);
 
 	//set param withing allowable limit
 	nh.setParam("speed", 0.0);

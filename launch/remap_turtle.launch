@@ -9,7 +9,7 @@ email: bbushnell@email.arizona.edu
 <launch>
 	<arg name= "packageLocation" default="$(find hw02bushnell)"/>
 
-	<param name= "rate" value = "10000"/>
+	<!--<param name= "rate" value = "10000"/>-->
 	<param name="/turtle_spiral/speed" value = "2"/>
 
         <include file = "$(find catvehicle)/launch/catvehicle_skidpan.launch"/>

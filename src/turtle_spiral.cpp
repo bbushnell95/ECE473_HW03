@@ -41,7 +41,7 @@ int main(int argc, char **argv){
 	n.param("rate", rate, 100.0);
 	ros::Rate loop_rate(rate);
 
-	velocity_publisher = n.advertise<geometry_msgs::Twist>("cmd_vel", 100);
+	velocity_publisher = n.advertise<geometry_msgs::Twist>("/turtle1/cmd_vel", 100);
 	position_subscriber = n.subscribe("/turtle1/pose",10, positionCallBack);
 	usleep(200000);
 	usleep(200000);
@@ -71,8 +71,11 @@ int main(int argc, char **argv){
 //makes the turtle move in a spiral (f = r(theta), where r is the distance from the start)
 void move(double speed, double theta, int rate){
 	geometry_msgs::Twist vel_msg;
+	int initialFlag = 0;
 	//ros::Rate loop_rate(rate);
 	
+	ros::spinOnce();
+
 	double initialX = turtle_position.x;
 	double initialY = turtle_position.y;
 	//ROS_INFO("INTIALX: %lf", initialX);
@@ -85,22 +88,23 @@ void move(double speed, double theta, int rate){
 	//set the angle speed
 	vel_msg.angular.x = 0;
 	vel_msg.angular.y = 0;
-	vel_msg.angular.z = 0.1;
+	vel_msg.angular.z = theta;
 
 	ros::Rate loop_rate(rate);
 
+	
 
 	//Distance (r) is speed * time so we need intital time
 	double t0 = ros::Time::now().toSec();
 	double t1 = 0.0;
 	double r = 0.0;
 
-	do{
+	do{	
 		ROS_INFO("X: %lf", turtle_position.x);
 		velocity_publisher.publish(vel_msg);
 		t1 = ros::Time::now().toSec();
 		r = calculateR(turtle_position.x, turtle_position.y, initialX, initialY);
-		//ve_msg.angular.z = vel_msg.angular.z + 
+		vel_msg.angular.z = (r - turtle_position.theta) / 0.1;
 		//vel_msg.linear.x = checkSpeed((r * theta) * 0.01);
 		ros::spinOnce();
 		loop_rate.sleep();
@@ -113,4 +117,5 @@ void positionCallBack(const turtlesim::Pose::ConstPtr & currPosition){
 
 	turtle_position.x = currPosition->x;
 	turtle_position.y = currPosition->y;
+	turtle_position.theta = currPosition->theta;
 }

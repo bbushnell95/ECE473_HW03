@@ -6,10 +6,12 @@
 *Email: bbushnell@email.arizona.edu
 *******************************************************************/
 #include <gtest/gtest.h>
+#include <math.h>
 #include "hw02bushnell/move.h"
 //#include "my_gtest/my_multiply.h"
 #include <ros/ros.h>
 #include "geometry_msgs/Twist.h"
+
 
 class CallbackHandler
 {
@@ -82,6 +84,127 @@ TEST(LibraryCase, CheckSpeedTest){
 	//Some really big number
 	result = checkSpeed(100000);
 	EXPECT_EQ(result, maxSpeed);
+}
+
+TEST(LibraryCase, CheckRTest){
+	double x0 = 0;
+	double y0 = 0;
+	double x1 = 0;
+	double y1 = 0;
+	double result;
+	double expected;
+	
+	
+	//double calculateR(double currentX, double currentY, double initialX, double initialY)
+	//when everything is zero
+	result = calculateR(x1, y1, x0, y0);
+	EXPECT_EQ(result, 0.0);
+
+	//Now some when both x1 and y1 are positive and equal, and x0, y0 = 0
+	y1 = 3.0;
+	x1 = 3.0;
+	
+	expected = sqrt(pow(x1 - x0, 2) + pow(y1-y0,2));
+	result = calculateR(x1, y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+	//Now whe x1 and y1 are different but positive, x0, y0 still equal to 0
+	y1 = 3.0;
+	x1 = 9.0;
+	
+	expected = sqrt(pow(x1 - x0, 2) + pow(y1-y0,2));
+	result = calculateR(x1, y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+	//Now x1 and y1 are the same negative number, x0, y1 still 0
+	y1 = -3.0;
+	x1 = -3.0;
+	
+	expected = sqrt(pow(x1-x0,2) + pow(y1-y0,2));
+	result = calculateR(x1, y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+	//x1 and y1 now different negative numbers, x0, y1 still 0
+	y1 = -3.0;
+	x1 = -9.0;
+
+	expected = sqrt(pow(x1 - x0, 2) + pow(y1-y0,2));
+	result = calculateR(x1,y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+	//x1 is positive, y1 is negative however \x1\ = \y1\, and x0 = y0 = 0
+	
+	y1 = -3.0;
+	x1 = 3.0;
+	
+	expected = sqrt(pow(x1 - x0, 2) + pow(y1-y0,2));
+	result = calculateR(x1,y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+	//x1 is positive, y1 is negative however \x1\ != \y1\ and x0 = y0 = 0
+	y1 = -3.0;
+	x1 = 9.0;
+
+
+	expected = sqrt(pow(x1 - x0, 2) + pow(y1-y0,2));
+	result = calculateR(x1,y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+
+/*********************Do all the same tests, but now x0 != y0***************************************/ 
+
+	//Now some when both x1 and y1 are positive and equal
+	y1 = 3.0;
+	x1 = 3.0;
+	y0 = 5.4;
+	x0 = 1.2;
+	
+	expected = sqrt(pow(x1 - x0, 2) + pow(y1-y0,2));
+	result = calculateR(x1, y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+	//Now whe x1 and y1 are different but positive
+	y1 = 3.0;
+	x1 = 9.0;
+	
+	expected = sqrt(pow(x1 - x0, 2) + pow(y1-y0,2));
+	result = calculateR(x1, y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+	//Now x1 and y1 are the same negative number
+	y1 = -3.0;
+	x1 = -3.0;
+	
+	expected = sqrt(pow(x1-x0,2) + pow(y1-y0,2));
+	result = calculateR(x1, y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+	//x1 and y1 now different negative numbers
+	y1 = -3.0;
+	x1 = -9.0;
+
+	expected = sqrt(pow(x1 - x0, 2) + pow(y1-y0,2));
+	result = calculateR(x1,y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+	//x1 is positive, y1 is negative however \x1\ = \y1\
+	
+	y1 = -3.0;
+	x1 = 3.0;
+	
+	expected = sqrt(pow(x1 - x0, 2) + pow(y1-y0,2));
+	result = calculateR(x1,y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
+	//x1 is positive, y1 is negative however \x1\ != \y1\ 
+	y1 = -3.0;
+	x1 = 9.0;
+
+
+	expected = sqrt(pow(x1 - x0, 2) + pow(y1-y0,2));
+	result = calculateR(x1,y1, x0, y0);
+	EXPECT_EQ(result, expected);
+
 }	
 
 

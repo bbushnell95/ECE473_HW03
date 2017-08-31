@@ -7,7 +7,7 @@ Although the car is now moving safely and in a circular pattern, it will not mak
 ## Goals
 The goal of this package is to meet the requirements set forth in the HW03 pdf for ECE473: Software Engineering Concepts at the University of Arizona
 
-#Installation
+# Installation
 To install, place this package into the catkin workspace that also has the catvehicle package in it. Then in command prompt, change directories to the workspace. i.e. $cd nameOfDirectory
 Then, run catkin_make to build the packages. i.e. $catkin_make
 This will build the packages and then you are ready to go. 
@@ -25,14 +25,14 @@ To run the check_values_test.test rostest:
 There are many things that go into making the catvehicle move int he way you want it, and simply just moving code over that worked on one system will not neceesary
 work on another.
 
-#About
+# About
 hw02bushnell is a fullfillment of HW02 and HW03 for ECE473. There are three launch files in the launch folder, turtleSpiral.launch, remap_turtle.launch, and part3.launch.
 These can be run using roslaunch. There is one test file check_values_test.test, this can be run with either rostest or catkin_make run_tests commands. 
 
-#Video
+# Video
 https://youtu.be/nLNBBErl7jc
 
-#License
+# License
 The BSD License
 
 Redistribution and use in source and binary forms, with or without modification, are permitted 
